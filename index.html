@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bien-être au Maroc — WEMWBS | Ali Bezzaa / FSJES Marrakech</title>
+
+  <!-- Polices Google : Inter (FR) + Tajawal (AR) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Variables de couleurs ── */
+    :root {
+      --couleur-fond       : #FAFAFA;
+      --couleur-principale : #1B4F8A;
+      --couleur-accent     : #2E8B6A;
+      --couleur-texte      : #1A1A2E;
+      --couleur-secondaire : #5A6A7A;
+      --couleur-bordure    : #D8E2EE;
+      --couleur-carte      : #FFFFFF;
+      --couleur-erreur     : #C0392B;
+      --couleur-succes     : #2E8B6A;
+      --rayon-bord         : 12px;
+      --ombre              : 0 2px 16px rgba(27,79,138,.10);
+      --police-fr          : 'Inter', sans-serif;
+      --police-ar          : 'Tajawal', sans-serif;
+    }
+
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family       : var(--police-fr);
+      background        : var(--couleur-fond);
+      color             : var(--couleur-texte);
+      min-height        : 100vh;
+      padding           : 0;
+      transition        : font-family .3s;
+    }
+
+    body.rtl {
+      font-family       : var(--police-ar);
+      direction         : rtl;
+    }
+
+    /* ── Barre de progression globale ── */
+    #barre-progression {
+      position          : fixed;
+      top               : 0; left: 0;
+      height            : 4px;
+      background        : linear-gradient(90deg, var(--couleur-principale), var(--couleur-accent));
+      width             : 0%;
+      transition        : width .5s ease;
+      z-index           : 999;
+      border-radius     : 0 2px 2px 0;
+    }
+
+    /* ── En-tête ── */
+    header {
+      background        : var(--couleur-principale);
+      color             : white;
+      padding           : 14px 20px;
+      display           : flex;
+      align-items       : center;
+      justify-content   : space-between;
+      position          : sticky;
+      top               : 0;
+      z-index           : 100;
+      box-shadow        : 0 2px 8px rgba(0,0,0,.15);
+    }
+
+    .entete-titre {
+      font-size         : .95rem;
+      font-weight       : 600;
+      opacity           : .95;
+    }
+
+    /* ── Bouton de langue ── */
+    #btn-langue {
+      background        : rgba(255,255,255,.18);
+      color             : white;
+      border            : 1.5px solid rgba(255,255,255,.45);
+      border-radius     : 8px;
+      padding           : 6px 14px;
+      font-size         : .85rem;
+      font-weight       : 600;
+      cursor            : pointer;
+      transition        : background .25s;
+      letter-spacing    : .04em;
+    }
+    #btn-langue:hover { background: rgba(255,255,255,.28); }
+
+    /* ── Conteneur principal ── */
+    main {
+      max-width         : 720px;
+      margin            : 0 auto;
+      padding           : 32px 16px 64px;
+    }
+
+    /* ── Carte ── */
+    .carte {
+      background        : var(--couleur-carte);
+      border-radius     : var(--rayon-bord);
+      box-shadow        : var(--ombre);
+      padding           : 32px 28px;
+      margin-bottom     : 20px;
+    }
+
+    /* ── Titres ── */
+    h1 { font-size: 1.55rem; font-weight: 700; color: var(--couleur-principale); margin-bottom: 6px; line-height: 1.3; }
+    h2 { font-size: 1.15rem; font-weight: 600; color: var(--couleur-principale); margin-bottom: 18px; }
+    h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+
+    /* ── Badge institution ── */
+    .badge-institution {
+      display           : inline-block;
+      background        : #EAF1FB;
+      color             : var(--couleur-principale);
+      border-radius     : 6px;
+      padding           : 4px 12px;
+      font-size         : .8rem;
+      font-weight       : 600;
+      margin-bottom     : 16px;
+    }
+
+    /* ── Texte info ── */
+    .info-texte {
+      color             : var(--couleur-secondaire);
+      font-size         : .93rem;
+      line-height       : 1.7;
+      margin-bottom     : 14px;
+    }
+
+    .duree-badge {
+      display           : inline-flex;
+      align-items       : center;
+      gap               : 6px;
+      background        : #F0FBF6;
+      color             : var(--couleur-accent);
+      border-radius     : 6px;
+      padding           : 4px 12px;
+      font-size         : .82rem;
+      font-weight       : 600;
+      margin-bottom     : 16px;
+    }
+
+    /* ── Confidentialité ── */
+    .rgpd {
+      background        : #F5F8FF;
+      border-left       : 3px solid var(--couleur-principale);
+      border-radius     : 0 8px 8px 0;
+      padding           : 12px 14px;
+      font-size         : .82rem;
+      color             : var(--couleur-secondaire);
+      line-height       : 1.6;
+      margin-bottom     : 20px;
+    }
+    body.rtl .rgpd {
+      border-left       : none;
+      border-right      : 3px solid var(--couleur-principale);
+      border-radius     : 8px 0 0 8px;
+    }
+
+    /* ── Boutons ── */
+    .btn {
+      display           : inline-block;
+      padding           : 13px 28px;
+      border-radius     : 10px;
+      font-size         : .97rem;
+      font-weight       : 600;
+      cursor            : pointer;
+      border            : none;
+      transition        : transform .15s, box-shadow .15s;
+      text-align        : center;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+    .btn:active { transform: none; }
+
+    .btn-principal {
+      background        : linear-gradient(135deg, var(--couleur-principale), #2563a8);
+      color             : white;
+      width             : 100%;
+    }
+
+    .btn-secondaire {
+      background        : white;
+      color             : var(--couleur-principale);
+      border            : 2px solid var(--couleur-principale);
+    }
+
+    .btn-accent {
+      background        : linear-gradient(135deg, var(--couleur-accent), #27ae6b);
+      color             : white;
+    }
+
+    /* ── Groupes de formulaire ── */
+    .groupe-form { margin-bottom: 20px; }
+
+    .groupe-form label {
+      display           : block;
+      font-size         : .88rem;
+      font-weight       : 600;
+      color             : var(--couleur-texte);
+      margin-bottom     : 7px;
+    }
+
+    .groupe-form select,
+    .groupe-form input[type="text"] {
+      width             : 100%;
+      padding           : 11px 14px;
+      border            : 1.5px solid var(--couleur-bordure);
+      border-radius     : 8px;
+      font-size         : .93rem;
+      font-family       : inherit;
+      color             : var(--couleur-texte);
+      background        : white;
+      transition        : border-color .2s;
+      appearance        : none;
+    }
+    .groupe-form select:focus,
+    .groupe-form input[type="text"]:focus {
+      outline           : none;
+      border-color      : var(--couleur-principale);
+      box-shadow        : 0 0 0 3px rgba(27,79,138,.12);
+    }
+
+    /* ── Item WEMWBS ── */
+    .item-wemwbs {
+      background        : white;
+      border            : 1.5px solid var(--couleur-bordure);
+      border-radius     : var(--rayon-bord);
+      padding           : 20px;
+      margin-bottom     : 14px;
+      transition        : border-color .2s, box-shadow .2s;
+    }
+    .item-wemwbs.reponde {
+      border-color      : var(--couleur-accent);
+      box-shadow        : 0 0 0 3px rgba(46,139,106,.10);
+    }
+
+    .numero-item {
+      font-size         : .75rem;
+      font-weight       : 700;
+      color             : var(--couleur-principale);
+      text-transform    : uppercase;
+      letter-spacing    : .08em;
+      margin-bottom     : 8px;
+    }
+
+    .texte-item {
+      font-size         : .97rem;
+      font-weight       : 500;
+      line-height       : 1.55;
+      margin-bottom     : 16px;
+    }
+
+    /* ── Échelle de Likert ── */
+    .likert {
+      display           : flex;
+      gap               : 8px;
+      flex-wrap         : wrap;
+    }
+
+    .likert-option {
+      flex              : 1;
+      min-width         : 80px;
+    }
+
+    .likert-option input[type="radio"] { display: none; }
+
+    .likert-option label {
+      display           : block;
+      text-align        : center;
+      padding           : 9px 6px;
+      border            : 1.5px solid var(--couleur-bordure);
+      border-radius     : 8px;
+      font-size         : .78rem;
+      font-weight       : 500;
+      cursor            : pointer;
+      transition        : all .2s;
+      color             : var(--couleur-secondaire);
+      user-select       : none;
+      line-height       : 1.3;
+    }
+
+    .likert-option input[type="radio"]:checked + label {
+      background        : var(--couleur-principale);
+      border-color      : var(--couleur-principale);
+      color             : white;
+      font-weight       : 600;
+      box-shadow        : 0 2px 8px rgba(27,79,138,.25);
+      transform         : translateY(-1px);
+    }
+
+    .likert-option label:hover {
+      border-color      : var(--couleur-principale);
+      color             : var(--couleur-principale);
+      background        : #EAF1FB;
+    }
+
+    /* ── Erreur validation ── */
+    .msg-erreur {
+      background        : #FDF0EF;
+      border            : 1px solid var(--couleur-erreur);
+      color             : var(--couleur-erreur);
+      border-radius     : 8px;
+      padding           : 12px 16px;
+      font-size         : .87rem;
+      font-weight       : 500;
+      margin-bottom     : 16px;
+      display           : none;
+    }
+
+    /* ── Résultats ── */
+    .score-affichage {
+      text-align        : center;
+      padding           : 24px;
+      background        : linear-gradient(135deg, #EAF1FB, #F0FBF6);
+      border-radius     : var(--rayon-bord);
+      margin-bottom     : 20px;
+    }
+
+    .score-nombre {
+      font-size         : 3.5rem;
+      font-weight       : 700;
+      color             : var(--couleur-principale);
+      line-height       : 1;
+    }
+
+    .score-sur { font-size: 1.1rem; color: var(--couleur-secondaire); margin-top: 4px; }
+
+    .barre-score-fond {
+      height            : 18px;
+      background        : #E0E8F0;
+      border-radius     : 99px;
+      overflow          : hidden;
+      margin            : 16px 0 8px;
+    }
+
+    .barre-score-rempli {
+      height            : 100%;
+      border-radius     : 99px;
+      transition        : width 1s ease;
+      background        : linear-gradient(90deg, var(--couleur-principale), var(--couleur-accent));
+    }
+
+    .interpretation {
+      border-radius     : 10px;
+      padding           : 16px 18px;
+      margin-bottom     : 16px;
+      font-size         : .92rem;
+      font-weight       : 500;
+      line-height       : 1.6;
+    }
+    .interpretation.faible  { background: #FDF0EF; border-left: 4px solid #E74C3C; color: #7B241C; }
+    .interpretation.modere  { background: #FEFAE6; border-left: 4px solid #F39C12; color: #7D5A00; }
+    .interpretation.eleve   { background: #F0FBF6; border-left: 4px solid var(--couleur-accent); color: #1A5C3A; }
+    body.rtl .interpretation { border-left: none; border-right: 4px solid; }
+
+    .merci-texte {
+      text-align        : center;
+      color             : var(--couleur-secondaire);
+      font-size         : .93rem;
+      line-height       : 1.7;
+      margin-bottom     : 20px;
+    }
+
+    .boutons-resultats {
+      display           : flex;
+      gap               : 12px;
+      flex-wrap         : wrap;
+    }
+    .boutons-resultats .btn { flex: 1; min-width: 160px; }
+
+    /* ── Pages (affichage/masquage) ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Indicateur d'étapes ── */
+    .etapes {
+      display           : flex;
+      justify-content   : center;
+      gap               : 8px;
+      margin-bottom     : 24px;
+    }
+    .etape-point {
+      width             : 10px;
+      height            : 10px;
+      border-radius     : 50%;
+      background        : var(--couleur-bordure);
+      transition        : background .3s;
+    }
+    .etape-point.active { background: var(--couleur-principale); }
+    .etape-point.fait   { background: var(--couleur-accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .carte { padding: 22px 16px; }
+      .likert { gap: 5px; }
+      .likert-option label { font-size: .72rem; padding: 8px 4px; }
+      h1 { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Barre de progression -->
+  <div id="barre-progression"></div>
+
+  <!-- En-tête fixe -->
+  <header>
+    <span class="entete-titre" id="entete-titre-texte">Bien-être au Maroc — WEMWBS</span>
+    <button id="btn-langue" onclick="basculerLangue()">العربية</button>
+  </header>
+
+  <main>
+    <!-- Indicateur d'étapes -->
+    <div class="etapes" id="etapes">
+      <div class="etape-point active" id="pt-0"></div>
+      <div class="etape-point"       id="pt-1"></div>
+      <div class="etape-point"       id="pt-2"></div>
+      <div class="etape-point"       id="pt-3"></div>
+    </div>
+
+    <!-- ═══ PAGE 1 — Informations sur la recherche ═══ -->
+    <div class="page active" id="page-0">
+      <div class="carte">
+        <div class="badge-institution" id="badge-institution">Ali Bezzaa — FSJES Marrakech</div>
+        <h1 id="titre-etude">Bien-être au Maroc</h1>
+        <p class="info-texte" id="sous-titre-etude">Étude sur le bien-être psychologique au Maroc</p>
+
+        <p class="info-texte" id="objectif-etude">
+          Cette étude vise à mesurer et comprendre le bien-être psychologique des individus au Maroc en utilisant l'échelle internationale validée WEMWBS (Warwick-Edinburgh, 2007). Vos réponses contribueront à une recherche académique menée à la FSJES de Marrakech et aideront à mieux comprendre les facteurs de bien-être dans le contexte marocain.
+        </p>
+
+        <div class="duree-badge">
+          <span>⏱</span>
+          <span id="texte-duree">Durée estimée : environ 5 minutes</span>
+        </div>
+
+        <div class="rgpd" id="texte-rgpd">
+          🔒 <strong>Confidentialité :</strong> Vos réponses sont entièrement anonymes et ne seront utilisées qu'à des fins de recherche académique. Aucune donnée permettant de vous identifier ne sera collectée ni partagée. Participation volontaire — vous pouvez interrompre à tout moment.
+        </div>
+
+        <button class="btn btn-principal" onclick="allerPage(1)" id="btn-commencer">
+          Commencer le questionnaire →
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 2 — Données socio-démographiques ═══ -->
+    <div class="page" id="page-1">
+      <div class="carte">
+        <h2 id="titre-demo">Quelques informations sur vous</h2>
+
+        <div class="groupe-form">
+          <label id="label-age">Âge</label>
+          <select id="champ-age">
+            <option value="" id="opt-age-vide">-- Sélectionnez --</option>
+            <option value="18-24">18 – 24 ans</option>
+            <option value="25-34">25 – 34 ans</option>
+            <option value="35-44">35 – 44 ans</option>
+            <option value="45-54">45 – 54 ans</option>
+            <option value="55-64">55 – 64 ans</option>
+            <option value="65+">65 ans et plus</option>
+          </select>
+        </div>
+
+        <div class="groupe-form">
+          <label id="label-genre">Genre</label>
+          <select id="champ-genre">
+            <option value="" id="opt-genre-vide">-- Sélectionnez --</option>
+            <option value="homme" id="opt-homme">Homme</option>
+            <option value="femme" id="opt-femme">Femme</option>
+            <option value="nr" id="opt-nr">Préfère ne pas répondre</option>
+          </select>
+        </div>
+
+        <div class="groupe-form">
+          <label id="label-education">Niveau d'éducation</label>
+          <select id="champ-education">
+            <option value="" id="opt-edu-vide">-- Sélectionnez --</option>
+            <option value="primaire" id="opt-primaire">Primaire</option>
+            <option value="college" id="opt-college">Collège</option>
+            <option value="lycee" id="opt-lycee">Lycée / Baccalauréat</option>
+            <option value="licence" id="opt-licence">Licence / Bac+3</option>
+            <option value="master" id="opt-master">Master / Bac+5</option>
+            <option value="doctorat" id="opt-doctorat">Doctorat</option>
+            <option value="autre" id="opt-edu-autre">Autre</option>
+          </select>
+        </div>
+
+        <div class="groupe-form">
+          <label id="label-situation">Situation professionnelle</label>
+          <select id="champ-situation">
+            <option value="" id="opt-sit-vide">-- Sélectionnez --</option>
+            <option value="employe" id="opt-employe">Employé(e)</option>
+            <option value="independant" id="opt-independant">Indépendant(e) / Auto-entrepreneur</option>
+            <option value="etudiant" id="opt-etudiant">Étudiant(e)</option>
+            <option value="chomage" id="opt-chomage">Sans emploi</option>
+            <option value="retraite" id="opt-retraite">Retraité(e)</option>
+            <option value="autre" id="opt-sit-autre">Autre</option>
+          </select>
+        </div>
+
+        <div class="groupe-form">
+          <label id="label-pays">Pays de résidence</label>
+          <input type="text" id="champ-pays" placeholder="Ex : Maroc" />
+        </div>
+
+        <div class="msg-erreur" id="erreur-demo">
+          ⚠️ Veuillez remplir tous les champs avant de continuer.
+        </div>
+
+        <button class="btn btn-principal" onclick="validerDemo()" id="btn-suivant-demo">
+          Continuer →
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 3 — Questionnaire WEMWBS ═══ -->
+    <div class="page" id="page-2">
+      <div class="carte">
+        <h2 id="titre-questionnaire">Questionnaire de bien-être</h2>
+        <p class="info-texte" id="consigne-questionnaire">
+          Pour chacune des affirmations suivantes, indiquez à quelle fréquence vous avez ressenti cela <strong>au cours des 2 dernières semaines</strong>.
+        </p>
+
+        <div id="conteneur-items">
+          <!-- Items générés dynamiquement par JS -->
+        </div>
+
+        <div class="msg-erreur" id="erreur-questionnaire">
+          ⚠️ Veuillez répondre à toutes les questions avant de soumettre.
+        </div>
+
+        <button class="btn btn-accent" onclick="soumettre()" id="btn-soumettre">
+          Voir mes résultats ✓
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 4 — Résultats ═══ -->
+    <div class="page" id="page-3">
+      <div class="carte">
+        <h2 id="titre-resultats">Vos résultats</h2>
+
+        <div class="score-affichage">
+          <div class="score-nombre" id="score-valeur">--</div>
+          <div class="score-sur" id="score-sur">/ 70</div>
+          <div class="barre-score-fond">
+            <div class="barre-score-rempli" id="barre-remplie" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="interpretation" id="bloc-interpretation">
+          <!-- Interprétation générée dynamiquement -->
+        </div>
+
+        <p class="merci-texte" id="texte-merci">
+          Merci d'avoir participé à cette étude. Vos réponses contribuent à une meilleure compréhension du bien-être psychologique au Maroc. Un rapport de recherche sera disponible à l'issue de l'étude.
+        </p>
+
+        <div class="boutons-resultats">
+          <button class="btn btn-secondaire" onclick="recommencer()" id="btn-recommencer">
+            ↺ Recommencer
+          </button>
+          <button class="btn btn-accent" onclick="telechargerPDF()" id="btn-pdf">
+            ⬇ Télécharger (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ════════════════════════════════════════════════════════════════════
+    // CONFIGURATION — COLLECTE DES DONNÉES VIA GITHUB ISSUES API
+    // ════════════════════════════════════════════════════════════════════
+    //
+    // ⚠️ SÉCURITÉ : Ne jamais mettre un token avec droits d'écriture ici.
+    // Utiliser un token GitHub avec permissions minimales (issues:write).
+    // Pour la production, remplacer par un backend (Netlify Functions, etc.)
+    //
+    const CONFIG = {
+      github_username  : "alibezzaa",   // ← à remplacer
+      github_repo      : "wemwbs-maroc-2025",        // ← à remplacer
+      github_token     : "",                  // ← laisser vide, géré par deploy.py
+      utiliser_github  : true,               // passe à true après déploiement
+    };
+
+    // ════════════════════════════════════════════════════════════════════
+    // TRADUCTIONS FR / AR
+    // ════════════════════════════════════════════════════════════════════
+    const T = {
+      fr: {
+        entete_titre      : "Bien-être au Maroc — WEMWBS",
+        btn_langue        : "العربية",
+        badge_institution : "Ali Bezzaa — FSJES Marrakech",
+        titre_etude       : "Bien-être au Maroc",
+        sous_titre        : "Étude sur le bien-être psychologique au Maroc",
+        objectif          : "Cette étude vise à mesurer et comprendre le bien-être psychologique des individus au Maroc en utilisant l'échelle internationale validée WEMWBS (Warwick-Edinburgh, 2007). Vos réponses contribueront à une recherche académique menée à la FSJES de Marrakech et aideront à mieux comprendre les facteurs de bien-être dans le contexte marocain.",
+        duree             : "⏱ Durée estimée : environ 5 minutes",
+        rgpd              : "🔒 Confidentialité : Vos réponses sont entièrement anonymes et ne seront utilisées qu'à des fins de recherche académique. Aucune donnée permettant de vous identifier ne sera collectée ni partagée. Participation volontaire — vous pouvez interrompre à tout moment.",
+        btn_commencer     : "Commencer le questionnaire →",
+        titre_demo        : "Quelques informations sur vous",
+        label_age         : "Âge",
+        label_genre       : "Genre",
+        label_education   : "Niveau d'éducation",
+        label_situation   : "Situation professionnelle",
+        label_pays        : "Pays de résidence",
+        placeholder_pays  : "Ex : Maroc",
+        opt_vide          : "-- Sélectionnez --",
+        opt_homme         : "Homme",
+        opt_femme         : "Femme",
+        opt_nr            : "Préfère ne pas répondre",
+        opt_primaire      : "Primaire",
+        opt_college       : "Collège",
+        opt_lycee         : "Lycée / Baccalauréat",
+        opt_licence       : "Licence / Bac+3",
+        opt_master        : "Master / Bac+5",
+        opt_doctorat      : "Doctorat",
+        opt_edu_autre     : "Autre",
+        opt_employe       : "Employé(e)",
+        opt_independant   : "Indépendant(e) / Auto-entrepreneur",
+        opt_etudiant      : "Étudiant(e)",
+        opt_chomage       : "Sans emploi",
+        opt_retraite      : "Retraité(e)",
+        opt_sit_autre     : "Autre",
+        btn_suivant       : "Continuer →",
+        erreur_demo       : "⚠️ Veuillez remplir tous les champs avant de continuer.",
+        titre_questionnaire : "Questionnaire de bien-être",
+        consigne          : "Pour chacune des affirmations suivantes, indiquez à quelle fréquence vous avez ressenti cela au cours des 2 dernières semaines.",
+        echelle           : ["Jamais", "Rarement", "Quelquefois", "Souvent", "Tout le temps"],
+        btn_soumettre     : "Voir mes résultats ✓",
+        erreur_questionnaire : "⚠️ Veuillez répondre à toutes les questions avant de soumettre.",
+        titre_resultats   : "Vos résultats",
+        score_sur         : "/ 70",
+        interp_faible     : "Bien-être faible — Votre score indique un niveau de bien-être qui mérite attention. Nous vous encourageons à chercher un soutien auprès d'un professionnel de santé.",
+        interp_modere     : "Bien-être modéré — Votre score est dans la moyenne. Quelques aspects de votre bien-être méritent attention. Prenez soin de vous et n'hésitez pas à solliciter du soutien si nécessaire.",
+        interp_eleve      : "Bien-être élevé — Votre score indique un bon niveau de bien-être psychologique. Continuez à prendre soin de vous et à cultiver ce qui contribue à votre équilibre.",
+        merci             : "Merci d'avoir participé à cette étude. Vos réponses contribuent à une meilleure compréhension du bien-être psychologique au Maroc. Un rapport de recherche sera disponible à l'issue de l'étude.",
+        btn_recommencer   : "↺ Recommencer",
+        btn_pdf           : "⬇ Télécharger (PDF)",
+        items: [
+          "Je me suis senti(e) optimiste quant à l'avenir",
+          "Je me suis senti(e) utile",
+          "Je me suis senti(e) détendu(e)",
+          "J'ai eu des sentiments chaleureux envers d'autres personnes",
+          "J'ai eu de l'énergie à revendre",
+          "J'ai abordé les problèmes avec lucidité",
+          "Je me suis senti(e) bien dans ma peau",
+          "Je me suis senti(e) proche des autres",
+          "J'ai été en mesure de prendre mes propres décisions",
+          "Je me suis senti(e) aimé(e) et apprécié(e)",
+          "Je me suis intéressé(e) à de nouvelles choses",
+          "Je me suis senti(e) joyeux/joyeuse",
+          "Je me suis senti(e) inspiré(e) dans ce que je faisais",
+          "J'ai eu l'impression que je contribuais à quelque chose d'important"
+        ]
+      },
+      ar: {
+        entete_titre      : "الرفاهية في المغرب — WEMWBS",
+        btn_langue        : "Français",
+        badge_institution : "علي بزاع — كلية العلوم القانونية والاقتصادية مراكش",
+        titre_etude       : "الرفاهية في المغرب",
+        sous_titre        : "دراسة حول الرفاه النفسي في المغرب",
+        objectif          : "تهدف هذه الدراسة إلى قياس وفهم الرفاه النفسي للأفراد في المغرب باستخدام مقياس WEMWBS الدولي المُعتمد (وارويك-إدنبرة، 2007). ستُسهم إجاباتكم في بحث أكاديمي تُجريه كلية العلوم القانونية والاقتصادية والاجتماعية بمراكش، وستُساعد على فهم عوامل الرفاه في السياق المغربي.",
+        duree             : "⏱ المدة التقديرية: حوالي 5 دقائق",
+        rgpd              : "🔒 السرية: إجاباتكم مجهولة الهوية تمامًا ولن تُستخدم إلا لأغراض البحث العلمي. لن يتم جمع أي بيانات تعريفية أو مشاركتها. المشاركة طوعية ويمكنكم التوقف في أي وقت.",
+        btn_commencer     : "ابدأ الاستبيان ←",
+        titre_demo        : "بعض المعلومات عنك",
+        label_age         : "العمر",
+        label_genre       : "الجنس",
+        label_education   : "المستوى التعليمي",
+        label_situation   : "الوضع المهني",
+        label_pays        : "بلد الإقامة",
+        placeholder_pays  : "مثال: المغرب",
+        opt_vide          : "-- اختر --",
+        opt_homme         : "ذكر",
+        opt_femme         : "أنثى",
+        opt_nr            : "أفضل عدم الإجابة",
+        opt_primaire      : "ابتدائي",
+        opt_college       : "إعدادي",
+        opt_lycee         : "ثانوي / بكالوريا",
+        opt_licence       : "إجازة / ليسانس",
+        opt_master        : "ماستر",
+        opt_doctorat      : "دكتوراه",
+        opt_edu_autre     : "أخرى",
+        opt_employe       : "موظف/ة",
+        opt_independant   : "مستقل / رائد أعمال",
+        opt_etudiant      : "طالب/ة",
+        opt_chomage       : "باحث/ة عن عمل",
+        opt_retraite      : "متقاعد/ة",
+        opt_sit_autre     : "أخرى",
+        btn_suivant       : "التالي ←",
+        erreur_demo       : "⚠️ يرجى ملء جميع الحقول قبل المتابعة.",
+        titre_questionnaire : "استبيان الرفاه النفسي",
+        consigne          : "لكل عبارة من العبارات التالية، أشر إلى مدى تكرار ما شعرت به خلال الأسبوعين الماضيين.",
+        echelle           : ["أبدًا", "نادرًا", "أحيانًا", "كثيرًا", "دائمًا"],
+        btn_soumettre     : "عرض نتائجي ✓",
+        erreur_questionnaire : "⚠️ يرجى الإجابة على جميع الأسئلة قبل الإرسال.",
+        titre_resultats   : "نتائجك",
+        score_sur         : "/ 70",
+        interp_faible     : "رفاهية منخفضة — تشير درجتك إلى مستوى من الرفاه يستحق الاهتمام. نشجعك على طلب الدعم من متخصص في الصحة النفسية.",
+        interp_modere     : "رفاهية متوسطة — درجتك في المتوسط. بعض جوانب رفاهيتك تستحق الاهتمام. اعتنِ بنفسك ولا تتردد في طلب الدعم عند الحاجة.",
+        interp_eleve      : "رفاهية مرتفعة — تشير درجتك إلى مستوى جيد من الرفاه النفسي. استمر في العناية بنفسك وتعزيز ما يُسهم في توازنك.",
+        merci             : "شكرًا لمشاركتك في هذه الدراسة. تُسهم إجاباتك في فهم أعمق للرفاه النفسي في المغرب. سيكون تقرير البحث متاحًا عند اكتمال الدراسة.",
+        btn_recommencer   : "↺ البدء من جديد",
+        btn_pdf           : "⬇ تنزيل (PDF)",
+        items: [
+          "شعرت بالتفاؤل تجاه المستقبل",
+          "شعرت أنني مفيد/ة",
+          "شعرت بالاسترخاء",
+          "شعرت بالدفء تجاه الآخرين",
+          "كان لديّ طاقة كافية",
+          "تعاملت مع المشكلات بوضوح",
+          "شعرت بالرضا عن نفسي",
+          "شعرت بالقرب من الآخرين",
+          "كنت قادر/ة على اتخاذ قراراتي بنفسي",
+          "شعرت بأنني محبوب/ة ومُقدَّر/ة",
+          "اهتممت بأشياء جديدة",
+          "شعرت بالبهجة والسعادة",
+          "شعرت بالإلهام فيما أقوم به",
+          "شعرت أن ما أفعله يساهم في شيء مهم"
+        ]
+      }
+    };
+
+    // ════════════════════════════════════════════════════════════════════
+    // ÉTAT DE L'APPLICATION
+    // ════════════════════════════════════════════════════════════════════
+    let langue        = "fr";
+    let pageActuelle  = 0;
+    let heureDebut    = Date.now();
+    let donneesDemo   = {};
+
+    // ════════════════════════════════════════════════════════════════════
+    // BASCULE DE LANGUE
+    // ════════════════════════════════════════════════════════════════════
+    function basculerLangue() {
+      langue = langue === "fr" ? "ar" : "fr";
+      document.documentElement.lang = langue;
+      document.body.classList.toggle("rtl", langue === "ar");
+      appliquerTraductions();
+      if (pageActuelle === 2) construireItems();
+    }
+
+    function appliquerTraductions() {
+      const t = T[langue];
+      document.getElementById("entete-titre-texte").textContent = t.entete_titre;
+      document.getElementById("btn-langue").textContent          = t.btn_langue;
+      document.getElementById("badge-institution").textContent   = t.badge_institution;
+      document.getElementById("titre-etude").textContent         = t.titre_etude;
+      document.getElementById("sous-titre-etude").textContent    = t.sous_titre;
+      document.getElementById("objectif-etude").textContent      = t.objectif;
+      document.getElementById("texte-duree").textContent         = t.duree;
+      document.getElementById("texte-rgpd").innerHTML            = t.rgpd;
+      document.getElementById("btn-commencer").textContent       = t.btn_commencer;
+      document.getElementById("titre-demo").textContent          = t.titre_demo;
+      document.getElementById("label-age").textContent           = t.label_age;
+      document.getElementById("label-genre").textContent         = t.label_genre;
+      document.getElementById("label-education").textContent     = t.label_education;
+      document.getElementById("label-situation").textContent     = t.label_situation;
+      document.getElementById("label-pays").textContent          = t.label_pays;
+      document.getElementById("champ-pays").placeholder          = t.placeholder_pays;
+      document.getElementById("btn-suivant-demo").textContent    = t.btn_suivant;
+      document.getElementById("erreur-demo").textContent         = t.erreur_demo;
+      document.getElementById("titre-questionnaire").textContent = t.titre_questionnaire;
+      document.getElementById("consigne-questionnaire").innerHTML = t.consigne;
+      document.getElementById("btn-soumettre").textContent       = t.btn_soumettre;
+      document.getElementById("erreur-questionnaire").textContent = t.erreur_questionnaire;
+      document.getElementById("titre-resultats").textContent     = t.titre_resultats;
+      document.getElementById("score-sur").textContent           = t.score_sur;
+      document.getElementById("texte-merci").textContent         = t.merci;
+      document.getElementById("btn-recommencer").textContent     = t.btn_recommencer;
+      document.getElementById("btn-pdf").textContent             = t.btn_pdf;
+
+      // Options des menus déroulants
+      const selects = {
+        "opt-age-vide"   : "opt_vide",
+        "opt-genre-vide" : "opt_vide",
+        "opt-homme"      : "opt_homme",
+        "opt-femme"      : "opt_femme",
+        "opt-nr"         : "opt_nr",
+        "opt-edu-vide"   : "opt_vide",
+        "opt-primaire"   : "opt_primaire",
+        "opt-college"    : "opt_college",
+        "opt-lycee"      : "opt_lycee",
+        "opt-licence"    : "opt_licence",
+        "opt-master"     : "opt_master",
+        "opt-doctorat"   : "opt_doctorat",
+        "opt-edu-autre"  : "opt_edu_autre",
+        "opt-sit-vide"   : "opt_vide",
+        "opt-employe"    : "opt_employe",
+        "opt-independant": "opt_independant",
+        "opt-etudiant"   : "opt_etudiant",
+        "opt-chomage"    : "opt_chomage",
+        "opt-retraite"   : "opt_retraite",
+        "opt-sit-autre"  : "opt_sit_autre",
+      };
+      for (const [id, cle] of Object.entries(selects)) {
+        const el = document.getElementById(id);
+        if (el && t[cle]) el.textContent = t[cle];
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // NAVIGATION ENTRE PAGES
+    // ════════════════════════════════════════════════════════════════════
+    function allerPage(num) {
+      document.getElementById("page-" + pageActuelle).classList.remove("active");
+      pageActuelle = num;
+      document.getElementById("page-" + num).classList.add("active");
+      mettreAJourEtapes();
+      mettreAJourBarre();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (num === 2) construireItems();
+    }
+
+    function mettreAJourEtapes() {
+      for (let i = 0; i < 4; i++) {
+        const pt = document.getElementById("pt-" + i);
+        pt.className = "etape-point";
+        if (i < pageActuelle)  pt.classList.add("fait");
+        if (i === pageActuelle) pt.classList.add("active");
+      }
+    }
+
+    function mettreAJourBarre() {
+      const pct = (pageActuelle / 3) * 100;
+      document.getElementById("barre-progression").style.width = pct + "%";
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // VALIDATION DONNÉES SOCIO-DÉMOGRAPHIQUES
+    // ════════════════════════════════════════════════════════════════════
+    function validerDemo() {
+      const age       = document.getElementById("champ-age").value;
+      const genre     = document.getElementById("champ-genre").value;
+      const education = document.getElementById("champ-education").value;
+      const situation = document.getElementById("champ-situation").value;
+      const pays      = document.getElementById("champ-pays").value.trim();
+      const erreur    = document.getElementById("erreur-demo");
+
+      if (!age || !genre || !education || !situation || !pays) {
+        erreur.style.display = "block";
+        return;
+      }
+      erreur.style.display = "none";
+      donneesDemo = { age, genre, education, situation, pays };
+      allerPage(2);
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // CONSTRUCTION DES ITEMS WEMWBS
+    // ════════════════════════════════════════════════════════════════════
+    function construireItems() {
+      const t          = T[langue];
+      const conteneur  = document.getElementById("conteneur-items");
+      conteneur.innerHTML = "";
+
+      t.items.forEach((texte, idx) => {
+        const div = document.createElement("div");
+        div.className = "item-wemwbs";
+        div.id = "item-" + idx;
+
+        const likertHTML = t.echelle.map((etiquette, val) => `
+          <div class="likert-option">
+            <input type="radio" name="item${idx}" id="i${idx}v${val+1}" value="${val+1}"
+                   onchange="surReponse(${idx})">
+            <label for="i${idx}v${val+1}">${etiquette}</label>
+          </div>
+        `).join("");
+
+        div.innerHTML = `
+          <div class="numero-item">${langue === "ar" ? "السؤال" : "Question"} ${idx + 1} / 14</div>
+          <div class="texte-item">${texte}</div>
+          <div class="likert">${likertHTML}</div>
+        `;
+        conteneur.appendChild(div);
+      });
+    }
+
+    function surReponse(idx) {
+      const item = document.getElementById("item-" + idx);
+      item.classList.add("reponde");
+      // Mise à jour de la barre de progression interne au questionnaire
+      const nb = document.querySelectorAll('input[type="radio"]:checked').length;
+      const pct = 0.667 + (nb / 14) * 0.333; // entre page 2 (67%) et page 3 (100%)
+      document.getElementById("barre-progression").style.width = (pct * 100) + "%";
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // SOUMISSION ET CALCUL DU SCORE
+    // ════════════════════════════════════════════════════════════════════
+    function soumettre() {
+      const reponses = [];
+      let scoreTotal = 0;
+      let toutRepond = true;
+
+      for (let i = 0; i < 14; i++) {
+        const selectionne = document.querySelector(`input[name="item${i}"]:checked`);
+        if (!selectionne) { toutRepond = false; break; }
+        const val = parseInt(selectionne.value);
+        reponses.push(val);
+        scoreTotal += val;
+      }
+
+      const erreur = document.getElementById("erreur-questionnaire");
+      if (!toutRepond) {
+        erreur.style.display = "block";
+        return;
+      }
+      erreur.style.display = "none";
+
+      // Calcul de la durée
+      const dureeSecondes = Math.round((Date.now() - heureDebut) / 1000);
+
+      // Interprétation
+      const t = T[langue];
+      let classeInterp, texteInterp;
+      if (scoreTotal <= 42) {
+        classeInterp = "faible"; texteInterp = t.interp_faible;
+      } else if (scoreTotal <= 52) {
+        classeInterp = "modere"; texteInterp = t.interp_modere;
+      } else {
+        classeInterp = "eleve"; texteInterp = t.interp_eleve;
+      }
+
+      // Affichage des résultats
+      allerPage(3);
+      document.getElementById("score-valeur").textContent = scoreTotal;
+      setTimeout(() => {
+        const pct = ((scoreTotal - 14) / 56) * 100;
+        document.getElementById("barre-remplie").style.width = pct + "%";
+      }, 100);
+
+      const blocInterp = document.getElementById("bloc-interpretation");
+      blocInterp.className = "interpretation " + classeInterp;
+      blocInterp.textContent = texteInterp;
+
+      // Sauvegarde des données
+      const entree = {
+        timestamp       : new Date().toISOString(),
+        langue          : langue,
+        age             : donneesDemo.age,
+        genre           : donneesDemo.genre,
+        education       : donneesDemo.education,
+        situation       : donneesDemo.situation,
+        pays            : donneesDemo.pays,
+        ...Object.fromEntries(reponses.map((v, i) => [`item_${i+1}`, v])),
+        score_total     : scoreTotal,
+        interpretation  : classeInterp,
+        duree_secondes  : dureeSecondes,
+      };
+
+      sauvegarderDonnees(entree);
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // SAUVEGARDE VIA GITHUB ISSUES API
+    // ════════════════════════════════════════════════════════════════════
+    async function sauvegarderDonnees(entree) {
+      if (!CONFIG.utiliser_github || !CONFIG.github_token) {
+        // Sauvegarde locale uniquement (localStorage comme fallback)
+        const existants = JSON.parse(localStorage.getItem("wemwbs_reponses") || "[]");
+        existants.push(entree);
+        localStorage.setItem("wemwbs_reponses", JSON.stringify(existants));
+        console.log("✓ Données sauvegardées localement :", entree);
+        return;
+      }
+
+      // Envoi vers GitHub Issues
+      try {
+        await fetch(
+          `https://api.github.com/repos/${CONFIG.github_username}/${CONFIG.github_repo}/issues`,
+          {
+            method  : "POST",
+            headers : {
+              "Authorization" : `token ${CONFIG.github_token}`,
+              "Content-Type"  : "application/json",
+            },
+            body: JSON.stringify({
+              title : `Réponse WEMWBS — ${entree.timestamp}`,
+              body  : "```json\n" + JSON.stringify(entree, null, 2) + "\n```",
+              labels: ["wemwbs-data"],
+            }),
+          }
+        );
+        console.log("✓ Données envoyées sur GitHub Issues");
+      } catch (e) {
+        console.warn("Échec GitHub Issues, sauvegarde locale activée :", e);
+        const existants = JSON.parse(localStorage.getItem("wemwbs_reponses") || "[]");
+        existants.push(entree);
+        localStorage.setItem("wemwbs_reponses", JSON.stringify(existants));
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // TÉLÉCHARGEMENT PDF DES RÉSULTATS
+    // ════════════════════════════════════════════════════════════════════
+    function telechargerPDF() {
+      window.print();
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // RECOMMENCER
+    // ════════════════════════════════════════════════════════════════════
+    function recommencer() {
+      heureDebut = Date.now();
+      donneesDemo = {};
+      document.getElementById("champ-age").value       = "";
+      document.getElementById("champ-genre").value     = "";
+      document.getElementById("champ-education").value = "";
+      document.getElementById("champ-situation").value = "";
+      document.getElementById("champ-pays").value      = "";
+      allerPage(0);
+    }
+
+    // ── Initialisation ──
+    appliquerTraductions();
+    mettreAJourBarre();
+  </script>
+</body>
+</html>
