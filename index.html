@@ -199,7 +199,7 @@ body.rtl .interp{border-left:none;border-right:4px solid}
 // CONFIGURATION — URL Google Sheets Apps Script
 // Remplacée automatiquement par la cellule 4 de Jupyter
 // ════════════════════════════════════════════════════════════════════════
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbwLvGFUVlLx4vZG2zANV6r8gT_-xMFi8vGiB1EIFUoJGCb0-hJJLrJo8W-uxwBpN5wW/exec";
+const SHEETS_URL = "AKfycbxHHrM52LHUYMIakSOjKXwVuyKva2T_H_dcs3FqrIbIvr463ykmF87EZbbB5dNCXz0v";
 
 // ════════════════════════════════════════════════════════════════════════
 // TRADUCTIONS FR / AR
@@ -485,13 +485,63 @@ async function envoyerDonnees(entree) {
   const statut = document.getElementById("statut-envoi");
   const t = T[lng];
 
-  // Vérification que l'URL a bien été configurée
-  if (!SHEETS_URL || SHEETS_URL === "https://script.google.com/macros/s/AKfycbwLvGFUVlLx4vZG2zANV6r8gT_-xMFi8vGiB1EIFUoJGCb0-hJJLrJo8W-uxwBpN5wW/exec") {
+  if (!SHEETS_URL || SHEETS_URL === "GOOGLE_SHEETS_URL_ICI") {
     sauvegarderLocal(entree);
     afficherStatut(statut, t.envoi_err, "err");
-    console.warn("URL Google Sheets non configurée — données en localStorage");
+    console.warn("URL Google Sheets non configurée");
     return;
   }
+
+  try {
+    // ── Envoi via formulaire caché dans une iframe invisible ──────────────
+    // Seule méthode fiable cross-origin sans serveur backend.
+    // fetch + no-cors envoie une requête sans corps → Apps Script reçoit vide.
+    // Un formulaire POST multipart passe les champs via e.parameter côté GAS.
+
+    // 1. Créer une iframe invisible pour absorber la réponse (évite navigation)
+    let iframe = document.getElementById("_iframe_gs");
+    if (!iframe) {
+      iframe = document.createElement("iframe");
+      iframe.id = "_iframe_gs";
+      iframe.name = "_iframe_gs";
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+    }
+
+    // 2. Créer un formulaire caché ciblant l'iframe
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = SHEETS_URL;
+    form.target = "_iframe_gs";
+    form.style.display = "none";
+
+    // 3. Ajouter chaque champ de l'entrée comme input hidden
+    Object.entries(entree).forEach(([cle, val]) => {
+      const input = document.createElement("input");
+      input.type  = "hidden";
+      input.name  = cle;
+      input.value = val !== null && val !== undefined ? String(val) : "";
+      form.appendChild(input);
+    });
+
+    // 4. Soumettre le formulaire et le retirer immédiatement après
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(() => document.body.removeChild(form), 1000);
+
+    // 5. Confirmer à l'utilisateur (l'iframe absorbe la réponse silencieusement)
+    afficherStatut(statut, t.envoi_ok, "ok");
+    console.log("✓ Données envoyées via form POST :", entree);
+
+    // 6. Sauvegarde locale en parallèle (backup)
+    sauvegarderLocal(entree);
+
+  } catch (err) {
+    sauvegarderLocal(entree);
+    afficherStatut(statut, t.envoi_err, "err");
+    console.warn("Échec envoi form :", err);
+  }
+}
 
   try {
     await fetch(SHEETS_URL, {
