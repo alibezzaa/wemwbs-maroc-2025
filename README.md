@@ -1,10 +1,8 @@
-# Questionnaire WEMWBS — Bien-être au Maroc 🇲🇦
+# Questionnaire WEMWBS — Bien-être au Maroc
 
-**Warwick-Edinburgh Mental Well-Being Scale (2007)**
-
-**Chercheur :** Ali Bezzaa | **Institution :** FSJES Marrakech
+**Ali Bezzaa | FSJES Marrakech**
 
 🔗 **https://alibezzaa.github.io/wemwbs-maroc-2025/**
 
-Questionnaire bilingue français / arabe · 14 items · Score 14–70
-Collecte des données via Google Sheets · Déployé sur GitHub Pages
+Questionnaire bilingue français / arabe · WEMWBS 14 items · Score 14–70
+Collecte Google Sheets · GitHub Pages
